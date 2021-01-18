@@ -16,27 +16,20 @@ export default function SearchBarComponent() {
     Array<School>
   >([]);
 
-    const autoCompleteList = (schoolList: Array<School>) => {
-      const schoolArray: School[] = [];
-      if (schoolList.length < 7) {
-        for (let i = 0; i < schoolList.length; i++) {
-          console.log(schoolList[i]);
-          schoolArray.push(schoolList[i]);
-        console.log(`schoolArrayUnder7: ${schoolArray}`);
-
-        }
-        return schoolArray;
-      } else {
-        for (let i = 0; i < 7; i++) {
-          console.log(schoolList[i]);
-          schoolArray.push(schoolList[i]);
-        }
-        console.log(`schoolArray: ${schoolArray}`);
-        console.log(`schoolArrayOver7: ${schoolArray[1]}`);
-        return schoolArray;
+  const autoCompleteList = (schoolList: Array<School>) => {
+    const schoolArray: School[] = [];
+    if (schoolList.length < 10) {
+      for (let i = 0; i < schoolList.length; i++) {
+        schoolArray.push(schoolList[i]);
       }
-    };
-
+      return schoolArray;
+    } else {
+      for (let i = 0; i < 10; i++) {
+        schoolArray.push(schoolList[i]);
+      }
+      return schoolArray;
+    }
+  };
 
   const handleChange = (event: ChangeEvent) => {
     const { value } = event.target as HTMLInputElement;
@@ -44,8 +37,6 @@ export default function SearchBarComponent() {
     return API.searchSchoolName(schoolNameState)
       .then((res) => {
         setSchoolSuggestionsListState(res.data);
-        console.log("schoolList: ");
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -56,7 +47,7 @@ export default function SearchBarComponent() {
     event.preventDefault();
     return API.searchSchoolName(schoolNameState)
       .then((res) => {
-        console.log(res.data);
+        setSchoolSuggestionsListState(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -79,7 +70,7 @@ export default function SearchBarComponent() {
       </form>
 
       <ul>
-        {schoolSuggestionsListState.length ? (
+        {schoolSuggestionsListState.length > 0 ? (
           autoCompleteList(schoolSuggestionsListState).map((school: School) => {
             return <li>{school.name}</li>;
           })
