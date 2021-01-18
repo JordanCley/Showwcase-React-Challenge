@@ -37,6 +37,7 @@ export default function SearchBarComponent() {
     return API.searchSchoolName(schoolNameState)
       .then((res) => {
         setSchoolSuggestionsListState(res.data);
+        console.log(res.data)
       })
       .catch((err) => {
         console.log(err);
@@ -72,7 +73,7 @@ export default function SearchBarComponent() {
       <ul>
         {schoolSuggestionsListState.length > 0 ? (
           autoCompleteList(schoolSuggestionsListState).map((school: School) => {
-            return <li>{school.name}</li>;
+            return <li key={school.name} >{school.name}</li>;
           })
         ) : (
           <></>
